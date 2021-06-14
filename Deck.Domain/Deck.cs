@@ -1,8 +1,8 @@
-using Deck.Domain.ShuffleDeck;
+using DeckCards.Domain.ShuffleDeck;
 using System;
 using System.Collections.Generic;
 
-namespace Deck.Domain
+namespace DeckCards.Domain
 {
   public class Deck
   {

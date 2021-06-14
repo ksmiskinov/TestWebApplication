@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DeckCards.Domain;
+using DeckCards.Domain.ShuffleDeck;
+using DeckCards.Services.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
-using TestWebApplication.Models;
-using TestWebApplication.Models.ShuffleDeck;
+using System.Threading.Tasks;
 using TestWebApplication.ViewModel;
 
 namespace TestWebApplication.Controllers
@@ -13,11 +16,11 @@ namespace TestWebApplication.Controllers
   public class DeckMangerController : ControllerBase
   {
     private readonly ILogger<DeckMangerController> _logger;
-    private ApplicationContext _context;
+    private readonly IDeckCardsServices _deckCardsServices;
 
-    public DeckMangerController(ILogger<DeckMangerController> logger, ApplicationContext context)
+    public DeckMangerController(ILogger<DeckMangerController> logger, IDeckCardsServices deckCardsServices)
     {
-      _context = context;
+      _deckCardsServices = deckCardsServices ?? throw new ArgumentNullException(nameof(IDeckCardsServices));
       _logger = logger;
     }
 
@@ -29,7 +32,10 @@ namespace TestWebApplication.Controllers
     [Route("Decks")]
     public IActionResult GetDecks()
     {
-      var deckViewDataList = _context.Decks.Select(x => DeckViewData.New(x.Name));
+      //Todo: Нужно вынести в сервис builderDeckCards
+      var decks =  _deckCardsServices.GetDecksAsync().Result;
+      var deckViewDataList = decks.Select(x => DeckViewData.New(x.Id, x.Name)).ToList();
+
       return new ObjectResult(deckViewDataList);
     }
 
@@ -39,11 +45,9 @@ namespace TestWebApplication.Controllers
     /// <returns></returns>
     [HttpGet]
     [Route("Deck")]
-    public IActionResult GetDeck(string name)
+    async public Task<IActionResult> GetDeck(Guid deckId)
     {
-      var deck = _context.Decks
-                         .Include(x => x.Cards)
-                         .FirstOrDefault(x => x.Name == name);
+      var deck = await _deckCardsServices.GetDeckAsync(deckId);
 
       if (deck == null)
       {
@@ -66,10 +70,10 @@ namespace TestWebApplication.Controllers
     /// <returns></returns>
     [HttpPut]
     [Route("Deck")]
-    public IActionResult CreateDeck(string name)
+    async public Task<IActionResult> CreateDeck(string name)
     {
-      _context.Decks.Add(Deck.New(name));
-      _context.SaveChanges();
+      var newDeck = Deck.New(name);
+      await _deckCardsServices.AddDeckAsync(newDeck);
 
       return new OkResult();
     }
@@ -82,17 +86,9 @@ namespace TestWebApplication.Controllers
     /// <returns></returns>
     [HttpDelete]
     [Route("Deck")]
-    public IActionResult DeleteDeck(string name)
+    async public Task<IActionResult> DeleteDeck(Guid deckId)
     {
-      var deck = _context.Decks.FirstOrDefault(x => x.Name == name);
-      if (deck is null)
-      {
-        _logger.LogInformation("DeleteDeck: Объект не найден");
-        return new BadRequestResult();
-      }
-
-      _context.Decks.Remove(deck);
-      _context.SaveChanges();
+      await _deckCardsServices.RemoveDeckAsync(deckId);
       return new OkResult();
     }
 
@@ -103,19 +99,18 @@ namespace TestWebApplication.Controllers
     /// <returns></returns>
     [HttpPost]
     [Route("ShuffleDeck")]
-    public IActionResult ShuffleDeck(string name)
+    async public Task<IActionResult> ShuffleDeck(Guid deckId)
     {
-      var deck = _context.Decks
-                         .Include(x => x.Cards)
-                         .FirstOrDefault(x => x.Name == name);
-      if (deck is null)
-      {
-        _logger.LogInformation("ShuffleDeck: Объект не найден");
-        return new BadRequestResult();
-      }
+      var deck = await _deckCardsServices.GetDeckAsync(deckId);
 
+      if (deck == null)
+      {
+        _logger.LogInformation("GetDeck: Объект не найден");
+        return null;
+      }
       deck.ShuffleDeck(new ShuffleRandom());
-      _context.SaveChanges();
+
+      await _deckCardsServices.UpdateDeckAsync(deck);
 
       return new OkResult();
     }

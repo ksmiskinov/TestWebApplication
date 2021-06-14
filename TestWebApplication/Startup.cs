@@ -1,10 +1,11 @@
+using DeckCards.Data.cs;
+using DeckCards.Services.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TestWebApplication.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace TestWebApplication
 {
@@ -21,10 +22,14 @@ namespace TestWebApplication
     {
       string connection = Configuration.GetConnectionString("DefaultConnection");
 
-      services.AddDbContext<ApplicationContext>(options =>
+      services.AddDbContext<DeckData>(options =>
           options.UseSqlServer(connection));
 
       services.AddControllers();
+
+      services.AddDeckCardsRepositories();
+
+      services.AddDeckCardsServices();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

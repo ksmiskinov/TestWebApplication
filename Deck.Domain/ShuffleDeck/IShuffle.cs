@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Deck.Domain.ShuffleDeck
+namespace DeckCards.Domain.ShuffleDeck
 {
   public interface IShuffle
   {

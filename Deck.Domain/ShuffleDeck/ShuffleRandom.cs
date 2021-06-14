@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Deck.Domain.ShuffleDeck
+namespace DeckCards.Domain.ShuffleDeck
 {
   /// <summary>
   /// «простой» алгоритм перетасовки "Получить две карты и поменять местами, повторить много раз"

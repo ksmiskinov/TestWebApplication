@@ -1,6 +1,6 @@
 using System;
 
-namespace Deck.Domain
+namespace DeckCards.Domain
 {
   public class Card
   {

@@ -1,14 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
+using DeckCards.Domain;
 
-namespace TestWebApplication.Models
+namespace DeckCards.Data.cs
 {
-  public class ApplicationContext : DbContext
+  public class DeckData : DbContext
   {
+
+
     public DbSet<Deck> Decks { get; set; }
     public DbSet<Card> Сards { get; set; }
 
 
-    public ApplicationContext(DbContextOptions<ApplicationContext> options)
+    public DeckData(DbContextOptions<DeckData> options)
         : base(options)
     {
       Database.EnsureCreated();

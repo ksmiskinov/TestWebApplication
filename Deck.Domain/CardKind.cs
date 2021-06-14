@@ -1,4 +1,4 @@
-namespace Deck.Domain
+namespace DeckCards.Domain
 {
   /// <summary>
   /// Масть карты
