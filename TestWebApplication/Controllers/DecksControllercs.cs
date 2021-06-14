@@ -30,10 +30,10 @@ namespace TestWebApplication.Controllers
     /// <returns></returns>
     [HttpGet]
     [Route("Decks")]
-    public IActionResult GetDecks()
+    async public Task<IActionResult> GetDecks()
     {
       //Todo: Нужно вынести в сервис builderDeckCards
-      var decks =  _deckCardsServices.GetDecksAsync().Result;
+      var decks =  await _deckCardsServices.GetDecksAsync();
       var deckViewDataList = decks.Select(x => DeckViewData.New(x.Id, x.Name)).ToList();
 
       return new ObjectResult(deckViewDataList);
