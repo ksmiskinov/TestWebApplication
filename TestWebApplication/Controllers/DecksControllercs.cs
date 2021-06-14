@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System.Linq;
 using TestWebApplication.Models;
+using TestWebApplication.Models.ShuffleDeck;
 using TestWebApplication.ViewModel;
 
 namespace TestWebApplication.Controllers
@@ -20,18 +21,16 @@ namespace TestWebApplication.Controllers
       _logger = logger;
     }
 
-
-
     /// <summary>
-    /// Получить список колод
+    /// Получить список всех колод
     /// </summary>
     /// <returns></returns>
     [HttpGet]
     [Route("Decks")]
-    public IEnumerable<DeckViewData> GetDecks()
+    public IActionResult GetDecks()
     {
-      _logger.LogInformation("GetDecks");
-      return _context.Decks.Select(x=> DeckViewData.New(x.Name));
+      var deckViewDataList = _context.Decks.Select(x => DeckViewData.New(x.Name));
+      return new ObjectResult(deckViewDataList);
     }
 
     /// <summary>
@@ -40,11 +39,25 @@ namespace TestWebApplication.Controllers
     /// <returns></returns>
     [HttpGet]
     [Route("Deck")]
-    public DeckViewData GetDeck(string name)
+    public IActionResult GetDeck(string name)
     {
-      //поиск нужной колоды
+      var deck = _context.Decks
+                         .Include(x => x.Cards)
+                         .FirstOrDefault(x => x.Name == name);
 
-      return DeckViewData.New("Колода");
+      if (deck == null)
+      {
+        _logger.LogInformation("GetDeck: Объект не найден");
+        return null;
+      }
+
+      var deckInfoViewData = DeckInfoViewData.New(deck.Name,
+                                  deck.Cards.OrderBy(x => x.Position)
+                                            .Select(x => CardViewData.New(x.Kind.ToString() + " " + x.Rang.ToString()))
+                                            .ToList());
+
+      return new ObjectResult(deckInfoViewData);
+
     }
 
     /// <summary>
@@ -52,8 +65,12 @@ namespace TestWebApplication.Controllers
     /// </summary>
     /// <returns></returns>
     [HttpPut]
+    [Route("Deck")]
     public IActionResult CreateDeck(string name)
     {
+      _context.Decks.Add(Deck.New(name));
+      _context.SaveChanges();
+
       return new OkResult();
     }
 
@@ -64,8 +81,18 @@ namespace TestWebApplication.Controllers
     /// </summary>
     /// <returns></returns>
     [HttpDelete]
-    public IActionResult DeleteDeck()
+    [Route("Deck")]
+    public IActionResult DeleteDeck(string name)
     {
+      var deck = _context.Decks.FirstOrDefault(x => x.Name == name);
+      if (deck is null)
+      {
+        _logger.LogInformation("DeleteDeck: Объект не найден");
+        return new BadRequestResult();
+      }
+
+      _context.Decks.Remove(deck);
+      _context.SaveChanges();
       return new OkResult();
     }
 
@@ -75,8 +102,21 @@ namespace TestWebApplication.Controllers
     /// </summary>
     /// <returns></returns>
     [HttpPost]
+    [Route("ShuffleDeck")]
     public IActionResult ShuffleDeck(string name)
     {
+      var deck = _context.Decks
+                         .Include(x => x.Cards)
+                         .FirstOrDefault(x => x.Name == name);
+      if (deck is null)
+      {
+        _logger.LogInformation("ShuffleDeck: Объект не найден");
+        return new BadRequestResult();
+      }
+
+      deck.ShuffleDeck(new ShuffleRandom());
+      _context.SaveChanges();
+
       return new OkResult();
     }
 

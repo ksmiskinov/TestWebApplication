@@ -27,7 +27,6 @@ namespace TestWebApplication
       services.AddControllers();
     }
 
-
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       if (env.IsDevelopment())

@@ -1,10 +1,8 @@
-using System.Collections.Generic;
-
 namespace TestWebApplication.ViewModel
 {
-  public class DeckViewData
+  public class CardViewData
   {
-    private DeckViewData()
+    private CardViewData()
     {
     }
 
@@ -13,10 +11,10 @@ namespace TestWebApplication.ViewModel
     /// </summary>
     public string Name { get; set; }
 
-    public static DeckViewData New(string name)
-      => new DeckViewData
+    public static CardViewData New(string name)
+      => new CardViewData
       {
-        Name = name,
+        Name = name
       };
   }
 }

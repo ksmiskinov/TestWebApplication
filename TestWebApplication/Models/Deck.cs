@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TestWebApplication.Models;
+using TestWebApplication.Models.ShuffleDeck;
 
 namespace TestWebApplication
 {
@@ -12,14 +13,21 @@ namespace TestWebApplication
     {
       Name = name;
 
-      //var position = 1;
-      //foreach (CardKind kind in Enum.GetValues(typeof(CardKind)))
-      //{
-      //  foreach (CardRang rang in Enum.GetValues(typeof(CardRang)))
-      //  {
-      //    Cards.Add(Ñard.New(kind, rang, position++));
-      //  }
-      //}
+      var cards = new List<Card>();
+      var position = 1;
+      foreach (CardKind kind in Enum.GetValues(typeof(CardKind)))
+      {
+        foreach (CardRang rang in Enum.GetValues(typeof(CardRang)))
+        {
+          cards.Add(Card.New(kind, rang, position++));
+        }
+      }
+      Cards = cards;
+    }
+
+    public void ShuffleDeck(IShuffle shuffle)
+    {
+      Cards = shuffle.ToShuffle(Cards);
     }
 
     /// <summary>
@@ -35,7 +43,7 @@ namespace TestWebApplication
     /// <summary>
     /// Êàðòû
     /// </summary>
-    public IList<Ñard> Cards { get; set; }
+    public IList<Card> Cards { get; set; }
 
     public static Deck New(string name)
       => new Deck(name);

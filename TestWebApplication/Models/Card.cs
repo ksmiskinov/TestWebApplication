@@ -2,9 +2,9 @@ using System;
 
 namespace TestWebApplication.Models
 {
-  public class Сard
+  public class Card
   {
-    private Сard()
+    private Card()
     {
     }
 
@@ -12,6 +12,16 @@ namespace TestWebApplication.Models
     /// 
     /// </summary>
     public Guid Id { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public Deck Deck { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public Guid DeckId { get; set; }
 
     /// <summary>
     /// Тип карты (черви, крести, бубей, пики)
@@ -35,8 +45,8 @@ namespace TestWebApplication.Models
     /// <param name="rang">Достоинство карты</param>
     /// <param name="position">Позиция в колоде</param>
     /// <returns></returns>
-    public static Сard New(CardKind kind, CardRang rang, int position)
-      => new Сard()
+    public static Card New(CardKind kind, CardRang rang, int position)
+      => new Card()
       {
         Kind = kind,
         Rang = rang,
