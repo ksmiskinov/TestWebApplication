@@ -2,7 +2,6 @@
 using DeckCards.Domain.ShuffleDeck;
 using DeckCards.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
@@ -40,7 +39,7 @@ namespace TestWebApplication.Controllers
     }
 
     /// <summary>
-    /// Получить колоду по имени(в её текущем упорядоченном/перетасованном состоянии)
+    /// Получить колоду по имени(в её текущем упорядоченном/перетасованном состоянии) TODO: Сделано по deckId
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -52,7 +51,7 @@ namespace TestWebApplication.Controllers
       if (deck == null)
       {
         _logger.LogInformation("GetDeck: Объект не найден");
-        return null;
+        return new BadRequestResult();
       }
 
       var deckInfoViewData = DeckInfoViewData.New(deck.Name,
@@ -81,7 +80,7 @@ namespace TestWebApplication.Controllers
 
 
     /// <summary>
-    /// Удалить именованную колоду
+    /// Удалить именованную колоду TODO: Сделано по deckId
     /// </summary>
     /// <returns></returns>
     [HttpDelete]
@@ -94,7 +93,7 @@ namespace TestWebApplication.Controllers
 
 
     /// <summary>
-    /// Перетасовать колоду
+    /// Перетасовать колоду TODO: Сделано по deckId
     /// </summary>
     /// <returns></returns>
     [HttpPost]
@@ -106,7 +105,7 @@ namespace TestWebApplication.Controllers
       if (deck == null)
       {
         _logger.LogInformation("GetDeck: Объект не найден");
-        return null;
+        return new BadRequestResult();
       }
       deck.ShuffleDeck(new ShuffleRandom());
 
