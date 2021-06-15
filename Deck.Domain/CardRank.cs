@@ -3,7 +3,7 @@ namespace DeckCards.Domain
   /// <summary>
   /// ранг карты
   /// </summary>
-  public enum CardRang
+  public enum CardRank
   {
     Ace,
     Two,

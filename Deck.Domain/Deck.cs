@@ -17,9 +17,9 @@ namespace DeckCards.Domain
       var position = 1;
       foreach (CardKind kind in Enum.GetValues(typeof(CardKind)))
       {
-        foreach (CardRang rang in Enum.GetValues(typeof(CardRang)))
+        foreach (CardRank rank in Enum.GetValues(typeof(CardRank)))
         {
-          cards.Add(Card.New(kind, rang, position++));
+          cards.Add(Card.New(kind, rank, position++));
         }
       }
       Cards = cards;

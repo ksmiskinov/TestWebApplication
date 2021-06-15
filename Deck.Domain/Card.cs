@@ -31,7 +31,7 @@ namespace DeckCards.Domain
     /// <summary>
     /// Ранг карты
     /// </summary>
-    public CardRang Rang { get; set; }
+    public CardRank Rank { get; set; }
 
     /// <summary>
     /// Позиция карты в колоде
@@ -42,14 +42,14 @@ namespace DeckCards.Domain
     /// Создание новой колоды
     /// </summary>
     /// <param name="kind">Масть карты</param>
-    /// <param name="rang">Достоинство карты</param>
+    /// <param name="rank">Достоинство карты</param>
     /// <param name="position">Позиция в колоде</param>
     /// <returns></returns>
-    public static Card New(CardKind kind, CardRang rang, int position)
+    public static Card New(CardKind kind, CardRank rank, int position)
       => new Card()
       {
         Kind = kind,
-        Rang = rang,
+        Rank = rank,
         Position = position
       };
   }

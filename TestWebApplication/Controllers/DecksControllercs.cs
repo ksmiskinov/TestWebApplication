@@ -56,7 +56,7 @@ namespace TestWebApplication.Controllers
 
       var deckInfoViewData = DeckInfoViewData.New(deck.Name,
                                   deck.Cards.OrderBy(x => x.Position)
-                                            .Select(x => CardViewData.New(x.Kind.ToString() + " " + x.Rang.ToString()))
+                                            .Select(x => CardViewData.New(x.Kind.ToString() + " " + x.Rank.ToString()))
                                             .ToList());
 
       return new ObjectResult(deckInfoViewData);
