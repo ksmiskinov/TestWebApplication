@@ -1,11 +1,11 @@
 ﻿using DeckCards.Domain;
-using DeckCards.Domain.ShuffleDeck;
 using DeckCards.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using TestWebApplication.Models;
 using TestWebApplication.ViewModel;
 
 namespace TestWebApplication.Controllers
@@ -56,7 +56,7 @@ namespace TestWebApplication.Controllers
 
       var deckInfoViewData = DeckInfoViewData.New(deck.Name,
                                   deck.Cards.OrderBy(x => x.Position)
-                                            .Select(x => CardViewData.New(x.Kind.ToString() + " " + x.Rank.ToString()))
+                                            .Select(x => CardViewData.New(x.GetName()))
                                             .ToList());
 
       return new ObjectResult(deckInfoViewData);

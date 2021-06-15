@@ -4,22 +4,20 @@ namespace DeckCards.Domain
 {
   public class Card
   {
-    private Card()
-    {
-    }
+    private Card() { }
 
     /// <summary>
-    /// 
+    /// Уникальный идентификатор объекта
     /// </summary>
     public Guid Id { get; set; }
 
     /// <summary>
-    /// 
+    /// Ассоциация  с объектом
     /// </summary>
     public Deck Deck { get; set; }
 
     /// <summary>
-    /// 
+    /// Уникальный идентификатор объекта
     /// </summary>
     public Guid DeckId { get; set; }
 
@@ -37,6 +35,9 @@ namespace DeckCards.Domain
     /// Позиция карты в колоде
     /// </summary>
     public int Position { get; set; }
+
+    public string GetName()
+      => Kind.ToString() + " " + Rank.ToString();
 
     /// <summary>
     /// Создание новой колоды

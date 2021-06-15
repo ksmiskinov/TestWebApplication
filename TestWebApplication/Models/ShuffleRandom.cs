@@ -1,13 +1,15 @@
-﻿using System;
+﻿using DeckCards.Domain;
+using DeckCards.Domain.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DeckCards.Domain.ShuffleDeck
+namespace TestWebApplication.Models
 {
   /// <summary>
   /// «простой» алгоритм перетасовки "Получить две карты и поменять местами, повторить много раз"
   /// </summary>
-  public class ShuffleRandom : IShuffle
+  public class ShuffleRandom : IShuffleStrategy
   {
     public IList<Card> ToShuffle(IList<Card> inputCards)
     {

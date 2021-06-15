@@ -1,4 +1,4 @@
-using DeckCards.Domain.ShuffleDeck;
+using DeckCards.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 
@@ -8,11 +8,15 @@ namespace DeckCards.Domain
   {
     private Deck() { }
 
+    /// <summary>
+    /// Конструктор. Получить колоду карт.
+    /// </summary>
+    /// <param name="name"></param>
     private Deck(string name)
     {
       Name = name;
 
-      //TODO: необходимо понять, что такое сортированная колода по умолчанию
+      //TODO: необходимо понять, что такое сортированная колоды по умолчанию
       var cards = new List<Card>();
       var position = 1;
       foreach (CardKind kind in Enum.GetValues(typeof(CardKind)))
@@ -25,13 +29,17 @@ namespace DeckCards.Domain
       Cards = cards;
     }
 
-    public void ShuffleDeck(IShuffle shuffle)
+    /// <summary>
+    /// Перетасовать колоду карт в соответствии со стратегией тасовки.
+    /// </summary>
+    /// <param name="shuffle"></param>
+    public void ShuffleDeck(IShuffleStrategy shuffle)
     {
       Cards = shuffle.ToShuffle(Cards);
     }
 
     /// <summary>
-    /// 
+    /// Уникальный идентификатор объекта
     /// </summary>
     public Guid Id { get; set; }
 
