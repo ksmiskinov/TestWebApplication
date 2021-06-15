@@ -33,8 +33,11 @@ namespace DeckCards.Repository
     }
     async Task IDeckCardsRepository.AddDeckAsync(Deck deck)
     {
-      _context.Decks.Add(deck);
-      await _context.SaveChangesAsync();
+      if (!_context.Decks.Any(x => x.Name == deck.Name)) //Ограничение на добавление колоды с существующим именем.
+      {
+        _context.Decks.Add(deck);
+        await _context.SaveChangesAsync();
+      }
     }
 
     async Task IDeckCardsRepository.RemoveDeckAsync(Guid deckId)
