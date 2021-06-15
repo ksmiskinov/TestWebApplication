@@ -12,12 +12,12 @@ namespace TestWebApplication.Controllers
 {
   [ApiController]
   [Route("[controller]")]
-  public class DeckMangerController : ControllerBase
+  public class DeckManagerController : ControllerBase
   {
-    private readonly ILogger<DeckMangerController> _logger;
+    private readonly ILogger<DeckManagerController> _logger;
     private readonly IDeckCardsServices _deckCardsServices;
 
-    public DeckMangerController(ILogger<DeckMangerController> logger, IDeckCardsServices deckCardsServices)
+    public DeckManagerController(ILogger<DeckManagerController> logger, IDeckCardsServices deckCardsServices)
     {
       _deckCardsServices = deckCardsServices ?? throw new ArgumentNullException(nameof(IDeckCardsServices));
       _logger = logger;
