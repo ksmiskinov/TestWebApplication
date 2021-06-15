@@ -21,6 +21,6 @@ namespace TestWebApplication.Interfaces
     /// </summary>
     /// <param name="deckId"></param>
     /// <returns></returns>
-    Task<DeckViewData> DeckViewDataBuild(Guid deckId);
+    Task<DeckInfoViewData> DeckViewDataBuild(Guid deckId);
   }
 }

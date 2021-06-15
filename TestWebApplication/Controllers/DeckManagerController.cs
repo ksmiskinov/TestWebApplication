@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using TestWebApplication.Interfaces;
 using TestWebApplication.Models;
 using TestWebApplication.ViewModel;
 
@@ -17,9 +18,14 @@ namespace TestWebApplication.Controllers
     private readonly ILogger<DeckManagerController> _logger;
     private readonly IDeckCardsServices _deckCardsServices;
 
-    public DeckManagerController(ILogger<DeckManagerController> logger, IDeckCardsServices deckCardsServices)
+    private readonly IDeckManagerViewDataBuilder _deckManagerViewDataBuilder;
+
+    public DeckManagerController(ILogger<DeckManagerController> logger,
+                                 IDeckCardsServices deckCardsServices,
+                                 IDeckManagerViewDataBuilder deckManagerViewDataBuilder)
     {
       _deckCardsServices = deckCardsServices ?? throw new ArgumentNullException(nameof(IDeckCardsServices));
+      _deckManagerViewDataBuilder = deckManagerViewDataBuilder ?? throw new ArgumentNullException(nameof(IDeckManagerViewDataBuilder));
       _logger = logger;
     }
 
@@ -31,10 +37,7 @@ namespace TestWebApplication.Controllers
     [Route("Decks")]
     async public Task<IActionResult> GetDecks()
     {
-      //Todo: Нужно вынести в сервис builderDeckCards
-      var decks =  await _deckCardsServices.GetDecksAsync();
-      var deckViewDataList = decks.Select(x => DeckViewData.New(x.Id, x.Name)).ToList();
-
+      var deckViewDataList = await _deckManagerViewDataBuilder.DecksViewDataBuild();
       return new ObjectResult(deckViewDataList);
     }
 
@@ -46,21 +49,8 @@ namespace TestWebApplication.Controllers
     [Route("Deck")]
     async public Task<IActionResult> GetDeck(Guid deckId)
     {
-      var deck = await _deckCardsServices.GetDeckAsync(deckId);
-
-      if (deck == null)
-      {
-        _logger.LogInformation("GetDeck: Объект не найден");
-        return new BadRequestResult();
-      }
-
-      var deckInfoViewData = DeckInfoViewData.New(deck.Name,
-                                  deck.Cards.OrderBy(x => x.Position)
-                                            .Select(x => CardViewData.New(x.GetName()))
-                                            .ToList());
-
+      var deckInfoViewData = await _deckManagerViewDataBuilder.DeckViewDataBuild(deckId);
       return new ObjectResult(deckInfoViewData);
-
     }
 
     /// <summary>

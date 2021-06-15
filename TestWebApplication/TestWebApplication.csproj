@@ -14,9 +14,5 @@
     <ProjectReference Include="..\DeckCards.Services\DeckCards.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Builders\" />
-  </ItemGroup>
-
 
 </Project>

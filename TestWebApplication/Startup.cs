@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TestWebApplication.ServiceCollectionExtensions;
 
 namespace TestWebApplication
 {
@@ -30,6 +31,8 @@ namespace TestWebApplication
       services.AddDeckCardsRepositories();
 
       services.AddDeckCardsServices();
+
+      services.AddDataBuilders();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
