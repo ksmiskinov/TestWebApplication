@@ -12,6 +12,7 @@ namespace TestWebApplication.ServiceCollectionExtensions
     /// <param name="services"></param>
     /// <returns></returns>
     public static IServiceCollection AddDataBuilders(this IServiceCollection services)
-      => services.AddTransient<IDeckManagerViewDataBuilder, DeckManagerViewDataBuilder>();
+      => services.AddTransient<IDeckManagerViewDataBuilder, DeckManagerViewDataBuilder>()
+                 .AddTransient<IDeckManagerSaveDataBuilder, DeckManagerSaveDataBuilder>();
   }
 }
