@@ -1,8 +1,7 @@
 ﻿using DeckCards.Domain;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using TestWebApplication.ViewModel;
+using TestWebApplication.Models;
 
 namespace TestWebApplication.Interfaces
 {
@@ -17,5 +16,12 @@ namespace TestWebApplication.Interfaces
     /// <returns></returns>
     Task<Deck> ShuffleDeckSaveBuild(Guid deckId);
 
+    /// <summary>
+    /// Добавить новую колоду
+    /// </summary>
+    /// <param name="name">Наименование колоды</param>
+    /// <param name="deckKind">Варианты колоды</param>
+    /// <returns></returns>
+    Task<Deck> NewDeckSaveBuild(string name, DeckKind deckKind);
   }
 }

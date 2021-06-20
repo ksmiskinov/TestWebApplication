@@ -19,13 +19,16 @@ namespace TestWebApplication.Controllers
     private readonly IDeckCardsServices _deckCardsServices;
 
     private readonly IDeckManagerViewDataBuilder _deckManagerViewDataBuilder;
+    private readonly IDeckManagerSaveDataBuilder _deckManagerSaveDataBuilder;
 
     public DeckManagerController(ILogger<DeckManagerController> logger,
                                  IDeckCardsServices deckCardsServices,
-                                 IDeckManagerViewDataBuilder deckManagerViewDataBuilder)
+                                 IDeckManagerViewDataBuilder deckManagerViewDataBuilder, 
+                                 IDeckManagerSaveDataBuilder deckManagerSaveDataBuilder)
     {
       _deckCardsServices = deckCardsServices ?? throw new ArgumentNullException(nameof(IDeckCardsServices));
       _deckManagerViewDataBuilder = deckManagerViewDataBuilder ?? throw new ArgumentNullException(nameof(IDeckManagerViewDataBuilder));
+      _deckManagerSaveDataBuilder = deckManagerSaveDataBuilder ?? throw new ArgumentNullException(nameof(IDeckManagerSaveDataBuilder));
       _logger = logger;
     }
 
@@ -59,10 +62,13 @@ namespace TestWebApplication.Controllers
     /// <returns></returns>
     [HttpPut]
     [Route("Deck")]
-    async public Task<IActionResult> CreateDeck(string name)
+    async public Task<IActionResult> CreateDeck(string name, DeckKind deckKind)
     {
-      var newDeck = Deck.New(name);
-      await _deckCardsServices.AddDeckAsync(newDeck);
+      var deck =await _deckManagerSaveDataBuilder.NewDeckSaveBuild(name, deckKind);
+      if (deck == null)
+        return new BadRequestResult();
+
+      await _deckCardsServices.AddDeckAsync(deck);
 
       return new OkResult();
     }
@@ -90,14 +96,10 @@ namespace TestWebApplication.Controllers
     [Route("ShuffleDeck")]
     async public Task<IActionResult> ShuffleDeck(Guid deckId)
     {
-      var deck = await _deckCardsServices.GetDeckAsync(deckId);
 
+      var deck = await _deckManagerSaveDataBuilder.ShuffleDeckSaveBuild(deckId);
       if (deck == null)
-      {
-        _logger.LogInformation("GetDeck: Объект не найден");
         return new BadRequestResult();
-      }
-      deck.ShuffleDeck(new ShuffleRandom());
 
       await _deckCardsServices.UpdateDeckAsync(deck);
 
