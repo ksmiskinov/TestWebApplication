@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Deck.Domain\DeckCards.Domain.csproj" />
+    <ProjectReference Include="..\DeckCards.Domain\DeckCards.Domain.csproj" />
   </ItemGroup>
 
 </Project>
