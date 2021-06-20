@@ -33,8 +33,8 @@ namespace TestWebApplication.Builders
         return null;
 
       return DeckInfoViewData.New(deck.Name,
-                                  deck.Cards.OrderBy(x => x.Position)
-                                            .Select(x => CardViewData.New(x.GetName()))
+                                  deck.PositionCards.OrderBy(x => x.Position)
+                                            .Select(x => CardViewData.New(x.Card.GetName()))
                                             .ToList());
     }
   }

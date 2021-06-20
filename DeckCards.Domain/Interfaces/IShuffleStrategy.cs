@@ -7,8 +7,8 @@ namespace DeckCards.Domain.Interfaces
     /// <summary>
     /// Перетасовать колоду карт.
     /// </summary>
-    /// <param name="cards"></param>
+    /// <param name="positionCards"> передаются позиции карт в колоде</param>
     /// <returns></returns>
-    IList<Card>  ToShuffle(IList<Card> cards);
+    IList<PositionCard>  ToShuffle(IList<PositionCard> positionCards);
   }
 }

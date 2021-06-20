@@ -21,14 +21,16 @@ namespace DeckCards.Repository
     async Task<Deck> IDeckCardsRepository.FetchDeckAsync(Guid deckId)
     {
       return await _context.Decks
-                         .Include(x => x.Cards)
+                         .Include(x => x.PositionCards)
+                         .ThenInclude(x=>x.Card)
                          .FirstOrDefaultAsync(x => x.Id == deckId);
     }
 
     async Task<IList<Deck>> IDeckCardsRepository.FetchDecksAsync()
     {
       return await _context.Decks
-                         .Include(x => x.Cards)
+                         .Include(x => x.PositionCards)
+                         .ThenInclude(x => x.Card)
                          .ToListAsync();
     }
     async Task IDeckCardsRepository.AddDeckAsync(Deck deck)
@@ -53,7 +55,7 @@ namespace DeckCards.Repository
       var deckOld = await _context.Decks.FirstOrDefaultAsync(x => x.Id == deck.Id);
 
       deckOld.Name = deck.Name;
-      deckOld.Cards = deck.Cards;
+      deckOld.PositionCards = deck.PositionCards;
 
       await _context.SaveChangesAsync();
     }

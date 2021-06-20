@@ -17,16 +17,16 @@ namespace DeckCards.Domain
       Name = name;
 
       //TODO: необходимо понять, что такое сортированная колоды по умолчанию
-      var cards = new List<Card>();
+      var positionCards = new List<PositionCard>();
       var position = 1;
       foreach (CardKind kind in Enum.GetValues(typeof(CardKind)))
       {
         foreach (CardRank rank in Enum.GetValues(typeof(CardRank)))
         {
-          cards.Add(Card.New(kind, rank, position++));
+          positionCards.Add(PositionCard.New(kind, rank, position++));
         }
       }
-      Cards = cards;
+      PositionCards = positionCards;
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ namespace DeckCards.Domain
     /// <param name="shuffle"></param>
     public void ShuffleDeck(IShuffleStrategy shuffle)
     {
-      Cards = shuffle.ToShuffle(Cards);
+      PositionCards = shuffle.ToShuffle(PositionCards);
     }
 
     /// <summary>
@@ -49,9 +49,9 @@ namespace DeckCards.Domain
     public string Name { get; set; }
 
     /// <summary>
-    /// Карты
+    /// Позиция карты в колоде
     /// </summary>
-    public IList<Card> Cards { get; set; }
+    public IList<PositionCard> PositionCards { get; set; }
 
     public static Deck New(string name)
       => new Deck(name);

@@ -17,5 +17,13 @@ namespace DeckCards.Data.cs
     {
       Database.EnsureCreated();
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+      //modelBuilder.Entity<PositionCard>()
+      //    .HasOne(p => p.Card)
+      //    .WithOne(t => t.Id)
+      //    .OnDelete(DeleteBehavior.Cascade);
+    }
   }
 }

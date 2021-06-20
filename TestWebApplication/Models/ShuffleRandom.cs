@@ -11,7 +11,7 @@ namespace TestWebApplication.Models
   /// </summary>
   public class ShuffleRandom : IShuffleStrategy
   {
-    public IList<Card> ToShuffle(IList<Card> inputCards)
+    public IList<PositionCard> ToShuffle(IList<PositionCard> inputCards)
     {
       Random rnd = new Random();
       for (int i = 0; i < 1000; i++)
