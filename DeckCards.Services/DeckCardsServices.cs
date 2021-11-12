@@ -13,7 +13,7 @@ namespace DeckCards.Services
     private readonly IDeckCardsRepository _deckCardsRepository;
 
     public DeckCardsServices(IDeckCardsRepository deckCardsRepository)
-      => _deckCardsRepository = deckCardsRepository ?? throw new ArgumentNullException(nameof(IDeckCardsRepository));
+      => _deckCardsRepository = deckCardsRepository ?? throw new ArgumentNullException(nameof(deckCardsRepository));
 
     async Task<IList<Deck>> IDeckCardsServices.GetDecksAsync()
       => await _deckCardsRepository.FetchDecksAsync();

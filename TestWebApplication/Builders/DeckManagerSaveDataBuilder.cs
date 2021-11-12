@@ -20,7 +20,7 @@ namespace TestWebApplication.Builders
     public DeckManagerSaveDataBuilder(ILogger<DeckManagerSaveDataBuilder> logger, IDeckCardsServices deckCardsServices)
     {
       _logger = logger;
-      _deckCardsServices = deckCardsServices ?? throw new ArgumentNullException(nameof(IDeckCardsServices));
+      _deckCardsServices = deckCardsServices ?? throw new ArgumentNullException(nameof(deckCardsServices));
     }
 
     async Task<Deck> IDeckManagerSaveDataBuilder.ShuffleDeckSaveBuild(Guid deckId)

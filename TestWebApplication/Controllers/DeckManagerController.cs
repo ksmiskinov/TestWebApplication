@@ -1,13 +1,10 @@
-﻿using DeckCards.Domain;
-using DeckCards.Services.Abstractions;
+﻿using DeckCards.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using TestWebApplication.Interfaces;
 using TestWebApplication.Models;
-using TestWebApplication.ViewModel;
 
 namespace TestWebApplication.Controllers
 {
@@ -26,9 +23,9 @@ namespace TestWebApplication.Controllers
                                  IDeckManagerViewDataBuilder deckManagerViewDataBuilder, 
                                  IDeckManagerSaveDataBuilder deckManagerSaveDataBuilder)
     {
-      _deckCardsServices = deckCardsServices ?? throw new ArgumentNullException(nameof(IDeckCardsServices));
-      _deckManagerViewDataBuilder = deckManagerViewDataBuilder ?? throw new ArgumentNullException(nameof(IDeckManagerViewDataBuilder));
-      _deckManagerSaveDataBuilder = deckManagerSaveDataBuilder ?? throw new ArgumentNullException(nameof(IDeckManagerSaveDataBuilder));
+      _deckCardsServices = deckCardsServices ?? throw new ArgumentNullException(nameof(deckCardsServices));
+      _deckManagerViewDataBuilder = deckManagerViewDataBuilder ?? throw new ArgumentNullException(nameof(deckManagerViewDataBuilder));
+      _deckManagerSaveDataBuilder = deckManagerSaveDataBuilder ?? throw new ArgumentNullException(nameof(deckManagerSaveDataBuilder));
       _logger = logger;
     }
 
